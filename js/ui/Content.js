@@ -1,4 +1,5 @@
 import React from 'react'
+import { Container, Header } from './Components'
 
 /** URL for the content */
 const URL = 'https://vatom.readyplayer.me/avatar?frameApi&bodyType=fullbody'
@@ -75,24 +76,11 @@ export default class Content extends React.PureComponent {
     /** Render UI */
     render() {
         return <>
-            {/* Header */}
-            <div style={{ display: 'flex', height: 40, flex: '0 0 auto', flexDirection: 'row', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+            <Header title='Ready Player Me' onClose={this.props.onClose} />
 
-                {/* Title */}
-                <div style={{ fontSize: 15, margin: '0px 20px', flex: '1 1 1px' }}>
-                    Ready Player Me
-                </div>
-
-                {/* Close button */}
-                <div title='Close' onClick={evt => this.props.onClose(true)} style={{ width: 24, height: '100%', flex: '0 0 auto', cursor: 'pointer', backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundImage: `url(${require('../../images/close.svg')})` }} />
-                <div style={{ width: 10, flex: '0 0 auto' }} />
-
-            </div>
-
-            {/* Content */}
-            <div style={{ flex: '1 1 1px', maxHeight: 'calc(100% - 40px)', position: 'relative' }}>
+            <Container>
                 <iframe ref={r => this.contentRef = r} src={URL} style={{ width: '100%', height: '100%', margin: 0, padding: 0, border: 'none' }} />
-            </div>
+            </Container>
         </>
     }
 }

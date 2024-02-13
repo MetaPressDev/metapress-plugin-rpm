@@ -1,5 +1,7 @@
 import metadata from '../package.json'
+
 import Content from './ui/Content'
+import Picker from './ui/Picker'
 
 /**
  * Allow usage of Ready Player Me avatars in MetaPress.
@@ -45,8 +47,51 @@ export default class ReadyPlayerMePlugin {
         this.activeEditorReject = null
     }
 
+    /** Shows a picker for the user to select between current avatar and new one */
+    showPicker() {
+        return new Promise((resolve, reject) => {
+            // Called when user has closed the picker
+            const onClose = () => {
+                resolve(null)
+            }
+
+            // Called when a choice has been made
+            const onChoice = data => {
+                try {
+
+                    if (data.choice === 'previous') {
+                        resolve({ type: 'previous' })
+                    } else {
+                        resolve({ type: 'new' })
+                    }
+
+                } catch (err) {
+                    resolve(null)
+                }
+            }
+
+            metapress.dialogs.show({
+                title: 'Choose Avatar',
+                noHeader: true,
+                content: <Picker onChoice={onChoice} onClose={onClose} />
+            })
+        })
+    }
+
     /** Fetches the URL for the model */
     getModelURL = async () => {
+        const previousModelURL = metapress.profile.get('rpm_model_url')
+        let pickerResult = null
+
+        if (previousModelURL) {
+            pickerResult = await this.showPicker()
+
+            // User wants to use the previous model
+            if (pickerResult && pickerResult.type === 'previous') {
+                return previousModelURL
+            }
+        }
+
         const modelDialog = metapress.dialogs.show({
             title: 'Ready Player Me',
             noHeader: true,
