@@ -83,6 +83,7 @@ export default class ReadyPlayerMePlugin {
             const pickerDialog = metapress.dialogs.show({
                 title: 'Choose Avatar',
                 noHeader: true,
+                hideMetaverseButton: true,
                 content: <Picker onChoice={onChoice} onClose={onClose} />
             })
 
@@ -122,6 +123,7 @@ export default class ReadyPlayerMePlugin {
         const modelDialog = metapress.dialogs.show({
             title: 'Ready Player Me',
             noHeader: true,
+            hideMetaverseButton: true,
             content: <Content onAvatarExported={this.onAvatarExported} onClose={this.onContentClose} />
         })
 
