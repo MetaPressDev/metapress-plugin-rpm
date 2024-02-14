@@ -1,5 +1,6 @@
-import metadata from '../package.json'
+import React from 'react'
 
+import metadata from '../package.json'
 import Content from './ui/Content'
 import Picker from './ui/Picker'
 
@@ -14,13 +15,10 @@ export default class ReadyPlayerMePlugin {
     description     = metadata.metapress?.description || metadata.description
     version         = metadata.version
     provides        = [ ]
-    requires        = [ ]
+    requires        = [ 'dialogs', 'profile' ]
 
     /** Reference to the current resolve method */
     avatarResolve = null
-
-    /** Reference to the current reject method */
-    avatarReject = null
 
     /**
      * Called when the content window has been closed.
@@ -31,8 +29,8 @@ export default class ReadyPlayerMePlugin {
             return
         }
 
-        this.avatarReject?.(new Error('User cancelled avatar creation'))
-        this.avatarReject = null
+        this.avatarResolve({ error: 'User cancelled avatar creation.' })
+        this.avatarResolve = null
     }
 
     /**
@@ -43,38 +41,62 @@ export default class ReadyPlayerMePlugin {
      */
     onAvatarExported = data => {
         this.avatarResolve(data)
-        this.activeEditorResolve = null
-        this.activeEditorReject = null
+        this.avatarResolve = null
     }
 
     /** Shows a picker for the user to select between current avatar and new one */
     showPicker() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
+            let isSuccessful = false
+
+            // Called when we are finished with the picker
+            const finish = (data, success) => {
+                isSuccessful = success
+                pickerDialog?.close?.()
+                resolve(data)
+            }
+
             // Called when user has closed the picker
             const onClose = () => {
-                resolve(null)
+                finish(null, false)
             }
 
             // Called when a choice has been made
             const onChoice = data => {
+
                 try {
+                    if (!data || typeof data != 'object' || !data.choice) {
+                        throw new Error('Invalid data from choice.')
+                    }
 
                     if (data.choice === 'previous') {
-                        resolve({ type: 'previous' })
+                        finish({ type: 'previous' }, true)
                     } else {
-                        resolve({ type: 'new' })
+                        finish({ type: 'new' }, true)
                     }
 
                 } catch (err) {
-                    resolve(null)
+                    finish(null, false)
                 }
             }
 
-            metapress.dialogs.show({
+            const pickerDialog = metapress.dialogs.show({
                 title: 'Choose Avatar',
                 noHeader: true,
                 content: <Picker onChoice={onChoice} onClose={onClose} />
             })
+
+            while (!pickerDialog.isClosed) {
+                if (isSuccessful) {
+                    break
+                }
+
+                await new Promise(c => setTimeout(c, 250))
+            }
+
+            if (!isSuccessful) {
+                finish(null, false)
+            }
         })
     }
 
@@ -86,8 +108,13 @@ export default class ReadyPlayerMePlugin {
         if (previousModelURL) {
             pickerResult = await this.showPicker()
 
+            // User has closed picker
+            if (!pickerResult) {
+                return null
+            }
+
             // User wants to use the previous model
-            if (pickerResult && pickerResult.type === 'previous') {
+            if (pickerResult.type === 'previous') {
                 return previousModelURL
             }
         }
@@ -100,13 +127,16 @@ export default class ReadyPlayerMePlugin {
 
         // Wait for it to finish
         let data = await new Promise((resolve, reject) => {
-            this.activeEditorResolve = resolve
-            this.avatarReject = reject
+            this.avatarResolve = resolve
         })
 
         // Close the dialog window
         modelDialog.close()
         this.onContentClose(false)
+
+        if (!data || data.error) {
+            throw new Error(data?.error || 'User cancelled avatar creation.')
+        }
 
         let modelURL = data.modelURL
         let modelID = data.modelID
@@ -115,6 +145,7 @@ export default class ReadyPlayerMePlugin {
         modelURL += (modelURL.includes('?') ? '&' : '?') + '_=' + Date.now()
 
         // Done
+        metapress.profile.set('rpm_model_url', modelURL)
         return { url: modelURL, modelID }
     }
 

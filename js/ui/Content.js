@@ -14,16 +14,13 @@ export default class Content extends React.PureComponent {
 
     /** Called after first render */
     componentDidMount() {
-        if (!this.contentRef?.contentWindow) {
-            return
-        }
-
-        // Listen for any messages
-        this.contentRef.contentWindow.addEventListener('message', this.onMessage)
+        window.addEventListener('message', this.onMessage)
     }
 
     /** Called when a message has been received */
-    onMessage = msg => {
+    onMessage = async evt => {
+        let msg = evt?.data
+
         // Ensure message is parseable
         try {
             if (typeof msg === 'string') {
@@ -33,17 +30,29 @@ export default class Content extends React.PureComponent {
             return
         }
 
-        if (msg.source == 'readyplayerme' && msg.eventName == 'v1.frame.ready') {
+        // Not from Ready Player Me
+        if (msg.source !== 'readyplayerme') {
+            return
+        }
+
+        if (msg.eventName == 'v1.frame.ready') {
 
             // Frame has been loaded
             console.log('[ReadyPlayerMe] Frame loaded successfully.')
-            this.contentRef.contentWindow.postMessage(JSON.stringify({
-                target: 'readyplayerme',
-                type: 'subscribe',
-                eventName: 'v1.**'
-            }))
+            while (!this.contentRef?.contentWindow) {
+                await new Promise(r => setTimeout(r, 250))
+            }
 
-        } else if (msg.source == 'readyplayerme' && msg.eventName == 'v1.avatar.exported') {
+            this.contentRef.contentWindow.postMessage(
+                JSON.stringify({
+                    target: 'readyplayerme',
+                    type: 'subscribe',
+                    eventName: 'v1.**'
+                }),
+                '*'
+            )
+
+        } else if (msg.eventName == 'v1.avatar.exported') {
 
             // Extract model ID
             let modelID = /([0-9a-zA-Z]+)\.glb/g.exec(msg.data.url)[1]
@@ -75,12 +84,12 @@ export default class Content extends React.PureComponent {
 
     /** Render UI */
     render() {
-        return <>
+        return <div style={{ display: 'flex', position: 'relative', flexDirection: 'column', flex: '1 1 1px', width: '100%', height: '100%' }}>
             <Header title='Ready Player Me' onClose={this.props.onClose} />
 
             <Container>
                 <iframe ref={r => this.contentRef = r} src={URL} style={{ width: '100%', height: '100%', margin: 0, padding: 0, border: 'none' }} />
             </Container>
-        </>
+        </div>
     }
 }

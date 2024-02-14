@@ -7,7 +7,7 @@ import React from 'react'
  * @param {Function} props.onClose Called when the close button is clicked.
  */
 export const Header = props => {
-    return <div style={{ display: 'flex', height: 40, flex: '0 0 auto', flexDirection: 'row', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+    return <div style={{ display: 'flex', flex: '0 0 auto', height: 40, borderBottom: '1px solid rgba(255, 255, 255, 0.1)', alignItems: 'center' }}>
 
         {/* Title */}
         <div style={{ fontSize: 15, margin: '0px 20px', flex: '1 1 1px' }}>
@@ -27,7 +27,7 @@ export const Header = props => {
  * @param {React.ReactNode} props.children Child elements.
  */
 export const Container = props => {
-    return <div style={{ flex: '1 1 1px', maxHeight: 'calc(100% - 40px)', position: 'relative' }}>
+    return <div style={{ display: 'flex', flexDirection: 'column', flex: '1 1 auto', position: 'relative', maxHeight: 'calc(100% - 40px)' }}>
         { props.children }
     </div>
 }
