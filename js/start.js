@@ -29,7 +29,7 @@ export default class ReadyPlayerMePlugin {
             return
         }
 
-        this.avatarResolve({ error: 'User cancelled avatar creation.' })
+        this.avatarResolve?.({ error: 'User cancelled avatar creation.' })
         this.avatarResolve = null
     }
 
@@ -40,7 +40,7 @@ export default class ReadyPlayerMePlugin {
      * @param {string} data.modelID Identifier for the avatar model.
      */
     onAvatarExported = data => {
-        this.avatarResolve(data)
+        this.avatarResolve?.(data)
         this.avatarResolve = null
     }
 

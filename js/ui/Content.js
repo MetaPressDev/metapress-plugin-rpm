@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Header } from './Components'
 
 /** URL for the content */
-const URL = 'https://demo.readyplayer.me/avatar?frameApi&bodyType=fullbody'
+const URL = 'https://metapress.readyplayer.me/avatar?frameApi&bodyType=fullbody'
 
 /**
  * Shows content from the Ready Player Me API.
