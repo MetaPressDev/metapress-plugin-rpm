@@ -20,6 +20,35 @@ export default class ReadyPlayerMePlugin {
     /** Reference to the current resolve method */
     avatarResolve = null
 
+    /** Called when the plugin is loaded */
+    onLoad() {
+        const avatarInfo = metapress.profile.get('avatarConfig')
+        if (avatarInfo?.avatar_id !== 'extra.rpm') {
+            return
+        }
+
+        metapress.animation.setAnimation('idle', require('./animations/idle.glb'))
+        metapress.animation.setAnimation('walk', require('./animations/walk.glb'))
+        metapress.animation.setAnimation('run', require('./animations/run.glb'))
+        metapress.animation.setAnimation('jump', require('./animations/jump.glb'))
+    }
+
+    /** Called when the avatar has been changed */
+    $avatar_changed(config) {
+        if (config?.avatar_id !== 'extra.rpm') {
+            metapress.animation.resetAnimation('idle')
+            metapress.animation.resetAnimation('walk')
+            metapress.animation.resetAnimation('run')
+            metapress.animation.resetAnimation('jump')
+            return
+        }
+
+        metapress.animation.setAnimation('idle', require('./animations/idle.glb'))
+        metapress.animation.setAnimation('walk', require('./animations/walk.glb'))
+        metapress.animation.setAnimation('run', require('./animations/run.glb'))
+        metapress.animation.setAnimation('jump', require('./animations/jump.glb'))
+    }
+
     /**
      * Called when the content window has been closed.
      * @param {boolean} fromUser `true` if the user closed the window, `false` otherwise.
