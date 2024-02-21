@@ -22,6 +22,8 @@ export default class ReadyPlayerMePlugin {
 
     /** Called when the plugin is loaded */
     onLoad() {
+        metapress.plugins.addEventListener('avatar_changed', this.onAvatarChanged)
+
         const avatarInfo = metapress.profile.get('avatarConfig')
         if (avatarInfo?.avatar_id !== 'extra.rpm') {
             return
@@ -34,7 +36,7 @@ export default class ReadyPlayerMePlugin {
     }
 
     /** Called when the avatar has been changed */
-    $avatar_changed(config) {
+    onAvatarChanged = config => {
         if (config?.avatar_id !== 'extra.rpm') {
             metapress.animation.resetAnimation('idle')
             metapress.animation.resetAnimation('walk')
