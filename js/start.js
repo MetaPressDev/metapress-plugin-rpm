@@ -195,6 +195,7 @@ export default class ReadyPlayerMePlugin {
             'avatar_walkSpeed': 1.2,
             'avatar_runSpeed': 4,
             'extra_offset_y': 0,
+            'order': -10,
             'url': '',
             getURL: this.getModelURL,
 
