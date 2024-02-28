@@ -15,13 +15,18 @@ export default class ReadyPlayerMePlugin {
     description     = metadata.metapress?.description || metadata.description
     version         = metadata.version
     provides        = [ ]
-    requires        = [ 'dialogs', 'profile' ]
+    requires        = [ 'entities', 'dialogs', 'profile' ]
 
     /** Reference to the current resolve method */
     avatarResolve = null
 
     /** Called when the plugin is loaded */
-    onLoad() {
+    async onLoad() {
+        // Ensure we have access to the entities
+        while (!metapress?.entities) {
+            await new Promise(c => setTimeout(c, 250))
+        }
+
         // Register idle animation
         metapress.entities.add({
             type: 'animation',
