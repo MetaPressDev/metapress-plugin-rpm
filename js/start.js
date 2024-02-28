@@ -22,33 +22,41 @@ export default class ReadyPlayerMePlugin {
 
     /** Called when the plugin is loaded */
     onLoad() {
-        metapress.plugins.addEventListener('avatar_changed', this.onAvatarChanged)
+        // Register idle animation
+        metapress.entities.add({
+            type: 'animation',
+            url: require('./animations/idle.glb'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.idle',
+        })
 
-        const avatarInfo = metapress.profile.get('avatarConfig')
-        if (avatarInfo?.avatar_id !== 'extra.rpm') {
-            return
-        }
+        // Register walk animation
+        metapress.entities.add({
+            type: 'animation',
+            url: require('./animations/walk.glb'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.walk',
+        })
 
-        metapress.animation.setAnimation('idle', require('./animations/idle.glb'))
-        metapress.animation.setAnimation('walk', require('./animations/walk.glb'))
-        metapress.animation.setAnimation('run', require('./animations/run.glb'))
-        metapress.animation.setAnimation('jump', require('./animations/jump.glb'))
-    }
+        // Register run animation
+        metapress.entities.add({
+            type: 'animation',
+            url: require('./animations/run.glb'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.run',
+        })
 
-    /** Called when the avatar has been changed */
-    onAvatarChanged = config => {
-        if (config?.avatar_id !== 'extra.rpm') {
-            metapress.animation.resetAnimation('idle')
-            metapress.animation.resetAnimation('walk')
-            metapress.animation.resetAnimation('run')
-            metapress.animation.resetAnimation('jump')
-            return
-        }
-
-        metapress.animation.setAnimation('idle', require('./animations/idle.glb'))
-        metapress.animation.setAnimation('walk', require('./animations/walk.glb'))
-        metapress.animation.setAnimation('run', require('./animations/run.glb'))
-        metapress.animation.setAnimation('jump', require('./animations/jump.glb'))
+        // Jump animation
+        metapress.entities.add({
+            type: 'animation',
+            url: require('./animations/jump.glb'),
+            animation_cache_priority: 1,
+            animation_slice: [
+                { from: 0.0, to: 0.4, name: 'rpm.jump_start' },
+                { from: 0.4, to: 0.6, name: 'rpm.jump_loop', scale: 8 },
+                { from: 0.6, to: 1.0, name: 'rpm.jump_end' },
+            ]
+        })
     }
 
     /**
@@ -191,6 +199,7 @@ export default class ReadyPlayerMePlugin {
             'avatar_image': require('../images/rpm-icon.jpg'),
             'avatar_name': 'Ready Player Me',
             'avatar_description': 'Ready Player Me avatar.',
+            'avatar_skeletonType': 'rpm',
             'avatar_height': 1.8,
             'avatar_walkSpeed': 1.2,
             'avatar_runSpeed': 4,
