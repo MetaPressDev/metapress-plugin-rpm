@@ -75,7 +75,7 @@ export default class Content extends React.PureComponent {
             ]
 
             // Get a lower LOD-level model through the RPM API
-            let modelURL = `https://models.readyplayer.me/${modelID}.glb?pose=T&lod=2&textureSizeLimit=1024&textureAtlas=1024&morphTargets=${morphs.join(',')}`
+            let modelURL = `https://models.readyplayer.me/${modelID}.glb?pose=T&lod=0&textureSizeLimit=1024&textureAtlas=1024&morphTargets=${morphs.join(',')}`
             console.debug(`[ReadyPlayerMe] Fetched lower LOD-level model with URL: "${modelURL}"`)
             this.props.onAvatarExported({ modelURL, modelID })
 
