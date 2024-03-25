@@ -15,7 +15,7 @@ export default class ReadyPlayerMePlugin {
     description     = metadata.metapress?.description || metadata.description
     version         = metadata.version
     provides        = [ ]
-    requires        = [ 'entities', 'dialogs', 'profile' ]
+    requires        = [ 'backend', 'entities', 'dialogs', 'profile' ]
 
     /** Reference to the current resolve method */
     avatarResolve = null
@@ -30,7 +30,7 @@ export default class ReadyPlayerMePlugin {
         // Register idle animation
         metapress.entities.add({
             type: 'animation',
-            url: require('./animations/idle.glb'),
+            url: require('./animations/animation_idle.fbx'),
             animation_cache_priority: 1,
             animation_name_override: 'rpm.idle',
         })
@@ -38,7 +38,7 @@ export default class ReadyPlayerMePlugin {
         // Register walk animation
         metapress.entities.add({
             type: 'animation',
-            url: require('./animations/walk.glb'),
+            url: require('./animations/animation_walk.fbx'),
             animation_cache_priority: 1,
             animation_name_override: 'rpm.walk',
         })
@@ -46,7 +46,7 @@ export default class ReadyPlayerMePlugin {
         // Register run animation
         metapress.entities.add({
             type: 'animation',
-            url: require('./animations/run.glb'),
+            url: require('./animations/animation_run.fbx'),
             animation_cache_priority: 1,
             animation_name_override: 'rpm.run',
         })
@@ -54,7 +54,7 @@ export default class ReadyPlayerMePlugin {
         // Jump animation
         metapress.entities.add({
             type: 'animation',
-            url: require('./animations/jump.glb'),
+            url: require('./animations/animation_jump.fbx'),
             animation_cache_priority: 1,
             animation_slice: [
                 { from: 0.0, to: 0.4, name: 'rpm.jump_start' },
@@ -62,6 +62,105 @@ export default class ReadyPlayerMePlugin {
                 { from: 0.6, to: 1.0, name: 'rpm.jump_end' },
             ]
         })
+         // Animated Emojis
+
+         // Register cry animation
+         metapress.entities.add({
+            type: 'animation',
+            url: metapress.backend.getAsset('emoji-animations/cry.fbx'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.cry',
+        })
+
+         // Register dance animation
+         metapress.entities.add({
+            type: 'animation',
+            url: metapress.backend.getAsset('emoji-animations/dance.fbx'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.dance',
+        })
+
+         // Register laugh animation
+         metapress.entities.add({
+            type: 'animation',
+            url: metapress.backend.getAsset('emoji-animations/laugh.fbx'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.laugh',
+        })
+
+         // Register love animation
+         metapress.entities.add({
+            type: 'animation',
+            url: metapress.backend.getAsset('emoji-animations/love.fbx'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.love',
+        })
+
+         // Register mindblown animation
+         metapress.entities.add({
+            type: 'animation',
+            url: metapress.backend.getAsset('emoji-animations/mindblown.fbx'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.mindblown',
+        })
+
+         // Register party animation
+         metapress.entities.add({
+            type: 'animation',
+            url: metapress.backend.getAsset('emoji-animations/party.fbx'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.party',
+        })
+
+         // Register raise animation
+         metapress.entities.add({
+            type: 'animation',
+            url: metapress.backend.getAsset('emoji-animations/raise.fbx'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.raise',
+        })
+
+         // Register rock animation
+         metapress.entities.add({
+            type: 'animation',
+            url: metapress.backend.getAsset('emoji-animations/rock.fbx'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.rock',
+        })
+
+         // Register salute animation
+         metapress.entities.add({
+            type: 'animation',
+            url: metapress.backend.getAsset('emoji-animations/salute.fbx'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.salute',
+        })
+
+         // Register sing animation
+         metapress.entities.add({
+            type: 'animation',
+            url: metapress.backend.getAsset('emoji-animations/sing.fbx'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.sing',
+        })
+
+         // Register thumbsup animation
+         metapress.entities.add({
+            type: 'animation',
+            url: metapress.backend.getAsset('emoji-animations/thumbsup.fbx'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.thumbsup',
+        })
+
+         // Register wave animation
+         metapress.entities.add({
+            type: 'animation',
+            url: metapress.backend.getAsset('emoji-animations/wave.fbx'),
+            animation_cache_priority: 1,
+            animation_name_override: 'rpm.wave',
+        })
+
+        
     }
 
     /**
@@ -165,7 +264,7 @@ export default class ReadyPlayerMePlugin {
         }
 
         const modelDialog = metapress.dialogs.show({
-            title: 'Ready Player Me',
+            title: 'Create your own',
             noHeader: true,
             hideMetaverseButton: true,
             content: <Content onAvatarExported={this.onAvatarExported} onClose={this.onContentClose} />
@@ -202,7 +301,7 @@ export default class ReadyPlayerMePlugin {
             // Standard
             'avatar_id': 'extra.rpm',
             'avatar_image': require('../images/rpm-icon.jpg'),
-            'avatar_name': 'Ready Player Me',
+            'avatar_name': 'Create your own',
             'avatar_description': 'Ready Player Me avatar.',
             'avatar_skeletonType': 'rpm',
             'avatar_height': 1.8,
