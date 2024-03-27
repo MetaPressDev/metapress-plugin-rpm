@@ -27,49 +27,15 @@ export default class ReadyPlayerMePlugin {
             await new Promise(c => setTimeout(c, 250))
         }
 
-        // Register idle animation
-        metapress.entities.add({
-            type: 'animation',
-            url: require('./animations/animation_idle.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'rpm.idle',
-        })
-
-        // Register walk animation
-        metapress.entities.add({
-            type: 'animation',
-            url: require('./animations/animation_walk.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'rpm.walk',
-        })
-
-        // Register run animation
-        metapress.entities.add({
-            type: 'animation',
-            url: require('./animations/animation_run.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'rpm.run',
-        })
-
-        // Jump animation
-        metapress.entities.add({
-            type: 'animation',
-            url: require('./animations/animation_jump.fbx'),
-            animation_cache_priority: 1,
-            animation_slice: [
-                { from: 0.0, to: 0.4, name: 'rpm.jump_start' },
-                { from: 0.4, to: 0.6, name: 'rpm.jump_loop', scale: 8 },
-                { from: 0.6, to: 1.0, name: 'rpm.jump_end' },
-            ]
-        })
-         // Animated Emojis
+       
+        //  // Animated Emojis
 
          // Register cry animation
          metapress.entities.add({
             type: 'animation',
             url: metapress.backend.getAsset('emoji-animations/cry.fbx'),
             animation_cache_priority: 1,
-            animation_name_override: 'rpm.cry',
+            animation_name_override: 'core.human.cry',
         })
 
          // Register dance animation
@@ -77,7 +43,7 @@ export default class ReadyPlayerMePlugin {
             type: 'animation',
             url: metapress.backend.getAsset('emoji-animations/dance.fbx'),
             animation_cache_priority: 1,
-            animation_name_override: 'rpm.dance',
+            animation_name_override: 'core.human.dance',
         })
 
          // Register laugh animation
@@ -85,7 +51,7 @@ export default class ReadyPlayerMePlugin {
             type: 'animation',
             url: metapress.backend.getAsset('emoji-animations/laugh.fbx'),
             animation_cache_priority: 1,
-            animation_name_override: 'rpm.laugh',
+            animation_name_override: 'core.human.laugh',
         })
 
          // Register love animation
@@ -93,7 +59,7 @@ export default class ReadyPlayerMePlugin {
             type: 'animation',
             url: metapress.backend.getAsset('emoji-animations/love.fbx'),
             animation_cache_priority: 1,
-            animation_name_override: 'rpm.love',
+            animation_name_override: 'core.human.love',
         })
 
          // Register mindblown animation
@@ -101,7 +67,7 @@ export default class ReadyPlayerMePlugin {
             type: 'animation',
             url: metapress.backend.getAsset('emoji-animations/mindblown.fbx'),
             animation_cache_priority: 1,
-            animation_name_override: 'rpm.mindblown',
+            animation_name_override: 'core.human.mindblown',
         })
 
          // Register party animation
@@ -109,7 +75,7 @@ export default class ReadyPlayerMePlugin {
             type: 'animation',
             url: metapress.backend.getAsset('emoji-animations/party.fbx'),
             animation_cache_priority: 1,
-            animation_name_override: 'rpm.party',
+            animation_name_override: 'core.human.party',
         })
 
          // Register raise animation
@@ -117,7 +83,7 @@ export default class ReadyPlayerMePlugin {
             type: 'animation',
             url: metapress.backend.getAsset('emoji-animations/raise.fbx'),
             animation_cache_priority: 1,
-            animation_name_override: 'rpm.raise',
+            animation_name_override: 'core.human.raise',
         })
 
          // Register rock animation
@@ -125,7 +91,7 @@ export default class ReadyPlayerMePlugin {
             type: 'animation',
             url: metapress.backend.getAsset('emoji-animations/rock.fbx'),
             animation_cache_priority: 1,
-            animation_name_override: 'rpm.rock',
+            animation_name_override: 'core.human.rock',
         })
 
          // Register salute animation
@@ -133,7 +99,7 @@ export default class ReadyPlayerMePlugin {
             type: 'animation',
             url: metapress.backend.getAsset('emoji-animations/salute.fbx'),
             animation_cache_priority: 1,
-            animation_name_override: 'rpm.salute',
+            animation_name_override: 'core.human.salute',
         })
 
          // Register sing animation
@@ -141,7 +107,7 @@ export default class ReadyPlayerMePlugin {
             type: 'animation',
             url: metapress.backend.getAsset('emoji-animations/sing.fbx'),
             animation_cache_priority: 1,
-            animation_name_override: 'rpm.sing',
+            animation_name_override: 'core.human.sing',
         })
 
          // Register thumbsup animation
@@ -149,7 +115,7 @@ export default class ReadyPlayerMePlugin {
             type: 'animation',
             url: metapress.backend.getAsset('emoji-animations/thumbsup.fbx'),
             animation_cache_priority: 1,
-            animation_name_override: 'rpm.thumbsup',
+            animation_name_override: 'core.human.thumbsup',
         })
 
          // Register wave animation
@@ -157,7 +123,7 @@ export default class ReadyPlayerMePlugin {
             type: 'animation',
             url: metapress.backend.getAsset('emoji-animations/wave.fbx'),
             animation_cache_priority: 1,
-            animation_name_override: 'rpm.wave',
+            animation_name_override: 'core.human.wave',
         })
 
         
@@ -303,7 +269,7 @@ export default class ReadyPlayerMePlugin {
             'avatar_image': require('../images/rpm-icon.jpg'),
             'avatar_name': 'Create your own',
             'avatar_description': 'Ready Player Me avatar.',
-            'avatar_skeletonType': 'rpm',
+            'avatar_skeletonType': 'core.human',
             'avatar_height': 1.8,
             'avatar_walkSpeed': 1.2,
             'avatar_runSpeed': 4,
