@@ -20,115 +20,6 @@ export default class ReadyPlayerMePlugin {
     /** Reference to the current resolve method */
     avatarResolve = null
 
-    /** Called when the plugin is loaded */
-    async onLoad() {
-        // Ensure we have access to the entities
-        while (!metapress?.entities) {
-            await new Promise(c => setTimeout(c, 250))
-        }
-
-       
-        //  // Animated Emojis
-
-         // Register cry animation
-         metapress.entities.add({
-            type: 'animation',
-            url: metapress.backend.getAsset('emoji-animations/cry.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'core.human.cry',
-        })
-
-         // Register dance animation
-         metapress.entities.add({
-            type: 'animation',
-            url: metapress.backend.getAsset('emoji-animations/dance.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'core.human.dance',
-        })
-
-         // Register laugh animation
-         metapress.entities.add({
-            type: 'animation',
-            url: metapress.backend.getAsset('emoji-animations/laugh.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'core.human.laugh',
-        })
-
-         // Register love animation
-         metapress.entities.add({
-            type: 'animation',
-            url: metapress.backend.getAsset('emoji-animations/love.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'core.human.love',
-        })
-
-         // Register mindblown animation
-         metapress.entities.add({
-            type: 'animation',
-            url: metapress.backend.getAsset('emoji-animations/mindblown.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'core.human.mindblown',
-        })
-
-         // Register party animation
-         metapress.entities.add({
-            type: 'animation',
-            url: metapress.backend.getAsset('emoji-animations/party.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'core.human.party',
-        })
-
-         // Register raise animation
-         metapress.entities.add({
-            type: 'animation',
-            url: metapress.backend.getAsset('emoji-animations/raise.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'core.human.raise',
-        })
-
-         // Register rock animation
-         metapress.entities.add({
-            type: 'animation',
-            url: metapress.backend.getAsset('emoji-animations/rock.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'core.human.rock',
-        })
-
-         // Register salute animation
-         metapress.entities.add({
-            type: 'animation',
-            url: metapress.backend.getAsset('emoji-animations/salute.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'core.human.salute',
-        })
-
-         // Register sing animation
-         metapress.entities.add({
-            type: 'animation',
-            url: metapress.backend.getAsset('emoji-animations/sing.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'core.human.sing',
-        })
-
-         // Register thumbsup animation
-         metapress.entities.add({
-            type: 'animation',
-            url: metapress.backend.getAsset('emoji-animations/thumbsup.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'core.human.thumbsup',
-        })
-
-         // Register wave animation
-         metapress.entities.add({
-            type: 'animation',
-            url: metapress.backend.getAsset('emoji-animations/wave.fbx'),
-            animation_cache_priority: 1,
-            animation_name_override: 'core.human.wave',
-        })
-
-        
-    }
-
     /**
      * Called when the content window has been closed.
      * @param {boolean} fromUser `true` if the user closed the window, `false` otherwise.
@@ -268,7 +159,7 @@ export default class ReadyPlayerMePlugin {
             'avatar_id': 'extra.rpm',
             'avatar_image': require('../images/rpm-icon.jpg'),
             'avatar_name': 'Create your own',
-            'avatar_description': 'Ready Player Me avatar.',
+            'avatar_description': 'Ready Player Me avatar. This opens the avatar creation UI and allows you to create your own avatar.',
             'avatar_skeletonType': 'core.human',
             'avatar_height': 1.8,
             'avatar_walkSpeed': 1.2,
@@ -304,5 +195,25 @@ export default class ReadyPlayerMePlugin {
 
         }
     }
+
+    /** AI knowledge base */
+    $ai_getKnowledgeBaseEntries = () => [
+
+        // Set avatar
+        {
+            id: this.id + ':createAvatar',
+            type: 'action',
+            name: 'Create custom avatar',
+            tags: 'Create avatar, new avatar, customize avatar, ready player me, RPM, avatar creation, avatar maker',
+            content: `
+                Call this action to show the avatar creation UI and allow the user to create their own avatar.
+            `,
+            action: input => {
+                metapress.avatars.setConfigurationByID('extra.rpm')
+                return 'Opened avatar creation panel.'
+            }
+        },
+
+    ]
 
 }

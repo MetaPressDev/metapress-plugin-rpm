@@ -1,6 +1,6 @@
 {
     "name": "metapress-ready-player-me",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Ready Player Me plugin to allow people to use their RPM avatars in MetaPress.",
     "main": "js/loader.js",
     "private": true,
